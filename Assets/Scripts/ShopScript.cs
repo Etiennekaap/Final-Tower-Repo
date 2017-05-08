@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ShopScript : MonoBehaviour
 {
+
+    public TurretBlueprints basicTurret;
+    public TurretBlueprints missileTurret;
+    public TurretBlueprints acidTurret;
+    public TurretBlueprints lazerTower;
+
     BuildManager buildManager;
 
     void Start()
@@ -18,16 +24,21 @@ public class ShopScript : MonoBehaviour
 
 	public void BuyBasicTurret()
     {
-        buildManager.SetBuildThisTurret(buildManager.firstTurretPrefab);
+        buildManager.SetBuildThisTurret(basicTurret);
     }
 
     public void BuyMissileTurret()
     {
-        buildManager.SetBuildThisTurret(buildManager.missileTurretPrefab);
+        buildManager.SetBuildThisTurret(missileTurret);
     }
 
-    public void BuySwagTurret()
+    public void BuyAcidTurret()
     {
-        buildManager.SetBuildThisTurret(buildManager.testTurretPrefab);
+        buildManager.SetBuildThisTurret(acidTurret);
+    }
+
+    public void BuyLazerTower()
+    {
+        buildManager.SetBuildThisTurret(lazerTower);
     }
 }

@@ -8,11 +8,8 @@ public class EnemyScript : MonoBehaviour {
 
     private enum SpawnPoint {NORTH, SOUTH, EAST, WEST};
     private int Spawn;
-    //private WaveSpawnScript wavespawnscript;
-    //public GameObject SpawnSouth;
-    //public GameObject SpawnWest;
-    //public GameObject SpawnEast;
-    //public GameObject SpawnNorth;
+    public int health = 100;
+    public int killValue = 3;
 
     private Transform target;
     private int waypointIndex = 0;
@@ -34,31 +31,7 @@ public class EnemyScript : MonoBehaviour {
 
     void Awake ()
     {
-        //Debug.Log(transform.position);
-        if (transform.position.x > 149 && transform.position.x < 151 && transform.position.z > 19 && transform.position.z < 21) // EAST
-        {
-            target = East.waypoints[0];
-            //Debug.Log("EAST");
-            Spawn = (int)SpawnPoint.EAST;
-        }
-        if (transform.position.x > 3 && transform.position.x < 6 && transform.position.z > 0 && transform.position.z < 1) // SOUTH
-        {
-            target = WaypointsScript.waypoints[0];
-            //Debug.Log("SOUTH");
-            Spawn = (int)SpawnPoint.SOUTH;
-        }
-        if (transform.position.x > 53 && transform.position.x < 56 && transform.position.z > 148 && transform.position.z < 151) // WEST
-        {
-            target = West.waypoints[0];
-            //Debug.Log("WEST");
-            Spawn = (int)SpawnPoint.WEST;
-        }
-        if (transform.position.x > 139 && transform.position.x < 141 && transform.position.z > 148 && transform.position.z < 151) // NORTH
-        {
-            target = North.waypoints[0];
-            //Debug.Log("NORTH");
-            Spawn = (int)SpawnPoint.NORTH;
-        }
+        GetSpawnPosition();
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -108,7 +81,7 @@ public class EnemyScript : MonoBehaviour {
         {
             if (waypointIndex >= WaypointsScript.waypoints.Length - 1)
             {
-                Destroy(gameObject);
+                EndOfPath();
                 return;
             }
 
@@ -119,7 +92,7 @@ public class EnemyScript : MonoBehaviour {
         {
             if (waypointIndex >= East.waypoints.Length - 1)
             {
-                Destroy(gameObject);
+                EndOfPath();
                 return;
             }
 
@@ -130,7 +103,7 @@ public class EnemyScript : MonoBehaviour {
         {
             if (waypointIndex >= West.waypoints.Length - 1)
             {
-                Destroy(gameObject);
+                EndOfPath();
                 return;
             }
 
@@ -141,12 +114,68 @@ public class EnemyScript : MonoBehaviour {
         {
             if (waypointIndex >= North.waypoints.Length - 1)
             {
-                Destroy(gameObject);
+                EndOfPath();
                 return;
             }
 
             waypointIndex++;
             target = North.waypoints[waypointIndex];
+        }
+    }
+
+    public void EndOfPath()
+    {
+        PlayerStats.integrity--;
+        Destroy(gameObject);
+
+        //TODO: SHOW THIS IN UI!
+        Debug.Log("You have " + PlayerStats.integrity + " Integrity Left");
+    }
+
+    public void TakeDamage(int pDamageTaken)
+    {
+        health -= pDamageTaken;
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        PlayerStats.resources += killValue;
+        //TODO: SHOW THIS IN UI!
+        Debug.Log("YOU KILLED AN ENEMY! YOU GAINED " + killValue + " resources. Now you have " + PlayerStats.resources + " resources!");
+        Destroy(gameObject);
+    }
+
+    private void GetSpawnPosition()
+    {
+        //Debug.Log(transform.position);
+        if (transform.position.x > 149 && transform.position.x < 151 && transform.position.z > 19 && transform.position.z < 21) // EAST
+        {
+            target = East.waypoints[0];
+            //Debug.Log("EAST");
+            Spawn = (int)SpawnPoint.EAST;
+        }
+        if (transform.position.x > 3 && transform.position.x < 6 && transform.position.z > 0 && transform.position.z < 1) // SOUTH
+        {
+            target = WaypointsScript.waypoints[0];
+            //Debug.Log("SOUTH");
+            Spawn = (int)SpawnPoint.SOUTH;
+        }
+        if (transform.position.x > 53 && transform.position.x < 56 && transform.position.z > 148 && transform.position.z < 151) // WEST
+        {
+            target = West.waypoints[0];
+            //Debug.Log("WEST");
+            Spawn = (int)SpawnPoint.WEST;
+        }
+        if (transform.position.x > 139 && transform.position.x < 141 && transform.position.z > 148 && transform.position.z < 151) // NORTH
+        {
+            target = North.waypoints[0];
+            //Debug.Log("NORTH");
+            Spawn = (int)SpawnPoint.NORTH;
         }
     }
 }

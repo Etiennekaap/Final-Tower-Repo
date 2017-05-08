@@ -6,6 +6,8 @@ public class BulletScript : MonoBehaviour {
 
     private Transform target;
     public float bulletSpeed = 65f;
+    public float AOERadius = 0f;
+    public int bulletDamage = 20;
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                                                                                                            //
@@ -64,6 +66,7 @@ public class BulletScript : MonoBehaviour {
         }
 
         transform.Translate(direction.normalized * currentDistance, Space.World);
+        transform.LookAt(target);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -85,10 +88,41 @@ public class BulletScript : MonoBehaviour {
     void HitTarget()
     {
         Destroy(gameObject);
+
+        if (AOERadius > 0f)
+        {
+            Explode();
+        }
+        else
+        {
+            DamageTarget(target);
+        }
+    }
+
+    void Explode ()
+    {
+        Collider[] collisions = Physics.OverlapSphere(transform.position, AOERadius);
+
+        foreach (Collider collider in collisions)
+        {
+            if (collider.tag == "Enemy")
+            {
+                DamageTarget(collider.transform);
+            }
+        }
     }
 
     void DamageTarget(Transform enemy)
     {
-        Destroy(enemy.gameObject);
+        EnemyScript thisEnemy = enemy.GetComponent<EnemyScript>();
+
+        if (thisEnemy != null)
+        thisEnemy.TakeDamage(bulletDamage);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, AOERadius);
     }
 }

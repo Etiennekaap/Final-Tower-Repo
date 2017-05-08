@@ -44,6 +44,9 @@ public class WaveSpawnScript : MonoBehaviour {
         {
             StartCoroutine(SpawnWave());
             countdown = timeBetweenWaves;
+            PlayerStats.resources += 10;
+            // TODO: EDIT ON UI!
+            Debug.Log("YOU GAINED 10 resources. You now have " + PlayerStats.resources + " resources!");
         }
 
         countdown -= Time.deltaTime;
@@ -93,7 +96,8 @@ public class WaveSpawnScript : MonoBehaviour {
         {
             spawnPoint = SpawnNorth;
         }
-
+    // DEBUG ONLY!!!!!!
+        spawnPoint = SpawnNorth;
         waveIndex++;
         for (int i = 0; i < waveIndex; i++)
         {

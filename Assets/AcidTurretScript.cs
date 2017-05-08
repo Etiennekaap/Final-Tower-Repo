@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileTurretScript : TurretScript
-{
+public class AcidTurretScript : TurretScript {
 
     void Start()
     {
@@ -21,9 +20,6 @@ public class MissileTurretScript : TurretScript
         {
             return;
         }
-
-        //Debug.Log(transform.position);
-
 
         Vector3 direction = target.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(direction);

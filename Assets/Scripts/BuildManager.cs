@@ -6,10 +6,9 @@ public class BuildManager : MonoBehaviour {
 
     public static BuildManager BuildManagerInstance;
 
-    private GameObject BuildThisTurret;
-    public GameObject firstTurretPrefab;
-    public GameObject missileTurretPrefab;
-    public GameObject testTurretPrefab;
+    private TurretBlueprints BuildThisTurret;
+
+    public bool Buildable { get { return BuildThisTurret != null; } }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                                                                                                            //
@@ -51,7 +50,6 @@ public class BuildManager : MonoBehaviour {
 
     void Start()
     {
-        //BuildThisTurret = firstTurretPrefab;
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -69,20 +67,31 @@ public class BuildManager : MonoBehaviour {
     /// </returns>
     #endregion
 
-    public GameObject GetBuildThisTurret()
-    {
-        return BuildThisTurret;
-    }
-
-
     //--------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                                                                                                            //
     //                                                                     SetBuildThisTurret();                                                  //
     //                                                                                                                                            //
     //--------------------------------------------------------------------------------------------------------------------------------------------//
-    public void SetBuildThisTurret(GameObject pTurret)
+    public void SetBuildThisTurret(TurretBlueprints pTurret)
     {
         BuildThisTurret = pTurret;
+    }
+
+    public void BuildTurretHere(NodeScript node)
+    {
+        if (PlayerStats.resources < BuildThisTurret.buildCost)
+        {
+            //TODO: POPUP on UI!
+            Debug.Log("We require more minerals");
+            return;
+        }
+
+       PlayerStats.resources -= BuildThisTurret.buildCost;
+       GameObject turret = Instantiate(BuildThisTurret.prefab, node.GetBuildPos(), Quaternion.identity);
+       node.turret = turret;
+
+        //TODO: Show resources in UI!
+        Debug.Log("Very Well. this turret will be conjured..... You have " + PlayerStats.resources + " left");
     }
 
 }

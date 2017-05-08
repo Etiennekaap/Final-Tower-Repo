@@ -14,6 +14,10 @@ public class TurretScript : MonoBehaviour {
     public float turretRange = 15f;
     public float fireRate = 1f;
     public float currentFireCooldown = 1f;
+    public float buildCost = 100f;
+    public float UpgradeCost = 50f;
+    public float SellCost = 55f;
+    public float FieldOfView = 3f;
 
     [Header("Unity Required Fields")]
     public Transform PivotPoint;

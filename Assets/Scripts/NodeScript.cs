@@ -9,7 +9,7 @@ public class NodeScript : MonoBehaviour
     private Color startColor;
 
     public Vector3 offsetter;
-    private GameObject turret;
+    public GameObject turret;
     BuildManager buildmanager;
     private Renderer rend;
 
@@ -33,6 +33,11 @@ public class NodeScript : MonoBehaviour
         buildmanager = BuildManager.BuildManagerInstance;
     }
 
+    public Vector3 GetBuildPos()
+    {
+        return transform.position + offsetter;
+    }
+
     //--------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                                                                                                            //
     //                                                                     OnMouseDown();                                                         //
@@ -54,7 +59,7 @@ public class NodeScript : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (buildmanager.GetBuildThisTurret() == null)
+        if (!buildmanager.Buildable)
             return;
 
         //Debug.Log(buildmanager.GetBuildThisTurret().ToString());
@@ -65,8 +70,10 @@ public class NodeScript : MonoBehaviour
             return;
         }
 
-        GameObject buildThisTurret = buildmanager.GetBuildThisTurret();
-        turret = Instantiate(buildThisTurret, transform.position + offsetter, transform.rotation);
+        buildmanager.BuildTurretHere(this);
+
+        //GameObject buildThisTurret = buildmanager.GetBuildThisTurret();
+        //turret = Instantiate(buildThisTurret, transform.position + offsetter, transform.rotation);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -85,7 +92,7 @@ public class NodeScript : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (buildmanager.GetBuildThisTurret() == null)
+        if (!buildmanager.Buildable)
             return;
 
         rend.material.color = hoverColor;
