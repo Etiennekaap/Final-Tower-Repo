@@ -6,7 +6,7 @@ public class BuildManager : MonoBehaviour {
 
     public static BuildManager BuildManagerInstance;
 
-    private TurretBlueprints BuildThisTurret;
+    public TurretBlueprints BuildThisTurret;
 
     public bool Buildable { get { return BuildThisTurret != null; } }
 

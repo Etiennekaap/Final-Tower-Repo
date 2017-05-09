@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class NodeScript : MonoBehaviour
 {
     public Color hoverColor;
+    public Color cantBuildColor;
     private Color startColor;
 
     public Vector3 offsetter;
@@ -62,8 +63,6 @@ public class NodeScript : MonoBehaviour
         if (!buildmanager.Buildable)
             return;
 
-        //Debug.Log(buildmanager.GetBuildThisTurret().ToString());
-
         if (turret != null)
         {
             Debug.Log("Can't Build Here. Already A Turret At This Location");
@@ -72,8 +71,6 @@ public class NodeScript : MonoBehaviour
 
         buildmanager.BuildTurretHere(this);
 
-        //GameObject buildThisTurret = buildmanager.GetBuildThisTurret();
-        //turret = Instantiate(buildThisTurret, transform.position + offsetter, transform.rotation);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -95,7 +92,18 @@ public class NodeScript : MonoBehaviour
         if (!buildmanager.Buildable)
             return;
 
-        rend.material.color = hoverColor;
+        if (turret != null)
+        {
+            rend.material.color = cantBuildColor;
+        }
+        else if (PlayerStats.resources < buildmanager.BuildThisTurret.buildCost)
+        {
+            rend.material.color = cantBuildColor;
+        }
+        else
+        {
+            rend.material.color = hoverColor;
+        }
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//

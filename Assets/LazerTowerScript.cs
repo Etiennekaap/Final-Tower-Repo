@@ -6,12 +6,17 @@ public class LazerTowerScript : TurretScript
 {
 
     public bool lazerActivated = true;
+    public float DOT = 30f;
     public LineRenderer lineRenderer;
-    [SerializeField]
+    //private EnemyScript targetEnemy;
     private ParticleSystem lightningEffect;
+    private Light pointLight;
+   
 
     void Start()
     {
+        newTargetingTimer = 1f;
+        pointLight = GetComponentInChildren<Light>();
         lightningEffect = GetComponentInChildren<ParticleSystem>();
         InvokeRepeating("UpdateTarget", 0f, newTargetingTimer);
     }
@@ -31,6 +36,7 @@ public class LazerTowerScript : TurretScript
                 {
                     lineRenderer.enabled = false;
                     lightningEffect.Stop();
+                    pointLight.enabled = false;
                 }
             }
             return;
@@ -60,21 +66,22 @@ public class LazerTowerScript : TurretScript
 
     void Lightning()
     {
+        if (target != null)
+        {
+           target.GetComponent<EnemyScript>().TakeLightningDamage(DOT * Time.deltaTime);
+        }
+
         if (!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;
-            //lightningEffect.Simulate(10,true,true);
-            //lightningEffect.Emit(20);
             lightningEffect.Play();
-            Debug.Log("Line Renderer Enabled and lightning effect start");
+            pointLight.enabled = true;
         }
-        //Debug.Log(lightningEffect.isPlaying);
-
         lineRenderer.SetPosition(0, firePoint.position);
         lineRenderer.SetPosition(1, target.position);
 
         Vector3 delta = firePoint.position - target.position;
-        lightningEffect.transform.position = target.position;
+        lightningEffect.transform.position = target.position + delta.normalized;
         lightningEffect.transform.rotation = Quaternion.LookRotation(delta);
     }
 

@@ -8,7 +8,9 @@ public class EnemyScript : MonoBehaviour {
 
     private enum SpawnPoint {NORTH, SOUTH, EAST, WEST};
     private int Spawn;
-    public int health = 100;
+    public float health = 100f;
+    public float armorValue = 3f;
+    public float trueDamage;
     public int killValue = 3;
 
     private Transform target;
@@ -132,10 +134,24 @@ public class EnemyScript : MonoBehaviour {
         Debug.Log("You have " + PlayerStats.integrity + " Integrity Left");
     }
 
-    public void TakeDamage(int pDamageTaken)
+    public void TakeDamage(float pFlatDamage)
     {
-        health -= pDamageTaken;
+        trueDamage = pFlatDamage - armorValue;
+        health -= trueDamage;
 
+        Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void TakeLightningDamage(float pFlatDamage)
+    {
+        trueDamage = pFlatDamage + (armorValue / 6);
+        health -= trueDamage;
+
+        Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
         if (health <= 0)
         {
             Die();
