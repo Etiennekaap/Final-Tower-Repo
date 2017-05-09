@@ -104,7 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a776c8cf52d738459ccb70b2ee3963f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverColor: {r: 0.08758649, g: 0.7941176, b: 0.15093048, a: 0}
+  buildColor: {r: 0.025086528, g: 0.85294116, b: 0.030795824, a: 0}
   cantBuildColor: {r: 0.86764705, g: 0.08931659, b: 0.08931659, a: 0}
+  selectionColor: {r: 0.12996572, g: 0.06277033, b: 0.9485294, a: 0}
   offsetter: {x: 0, y: 0.5, z: 0}
   turret: {fileID: 0}

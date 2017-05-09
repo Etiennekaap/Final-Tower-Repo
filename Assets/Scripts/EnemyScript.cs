@@ -131,7 +131,7 @@ public class EnemyScript : MonoBehaviour {
         Destroy(gameObject);
 
         //TODO: SHOW THIS IN UI!
-        Debug.Log("You have " + PlayerStats.integrity + " Integrity Left");
+       // Debug.Log("You have " + PlayerStats.integrity + " Integrity Left");
     }
 
     public void TakeDamage(float pFlatDamage)
@@ -139,7 +139,7 @@ public class EnemyScript : MonoBehaviour {
         trueDamage = pFlatDamage - armorValue;
         health -= trueDamage;
 
-        Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
+        //Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
         if (health <= 0)
         {
             Die();
@@ -151,7 +151,7 @@ public class EnemyScript : MonoBehaviour {
         trueDamage = pFlatDamage + (armorValue / 6);
         health -= trueDamage;
 
-        Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
+        //Debug.Log("FLAT DAMAGE: " + pFlatDamage + '\n' + "Armor Value " + armorValue + '\n' + "True Damage " + trueDamage);
         if (health <= 0)
         {
             Die();
@@ -162,7 +162,7 @@ public class EnemyScript : MonoBehaviour {
     {
         PlayerStats.resources += killValue;
         //TODO: SHOW THIS IN UI!
-        Debug.Log("YOU KILLED AN ENEMY! YOU GAINED " + killValue + " resources. Now you have " + PlayerStats.resources + " resources!");
+        //Debug.Log("YOU KILLED AN ENEMY! YOU GAINED " + killValue + " resources. Now you have " + PlayerStats.resources + " resources!");
         Destroy(gameObject);
     }
 

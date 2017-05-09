@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 
 public class NodeScript : MonoBehaviour
 {
-    public Color hoverColor;
+    public Color buildColor;
     public Color cantBuildColor;
+    public Color selectionColor;
     private Color startColor;
 
     public Vector3 offsetter;
@@ -60,14 +61,14 @@ public class NodeScript : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (!buildmanager.Buildable)
-            return;
-
         if (turret != null)
         {
-            Debug.Log("Can't Build Here. Already A Turret At This Location");
+            buildmanager.SelectNode(this);
             return;
         }
+
+        if (!buildmanager.Buildable)
+            return;
 
         buildmanager.BuildTurretHere(this);
 
@@ -89,20 +90,24 @@ public class NodeScript : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (!buildmanager.Buildable)
-            return;
-
-        if (turret != null)
+        if (buildmanager.BuildThisTurret == null)
         {
+            rend.material.color = selectionColor;
+            return;
+        }
+        if (PlayerStats.resources < buildmanager.BuildThisTurret.buildCost && buildmanager.BuildThisTurret != null)
+        {
+            Debug.Log("Cant Build Here");
             rend.material.color = cantBuildColor;
         }
-        else if (PlayerStats.resources < buildmanager.BuildThisTurret.buildCost)
+        else if (PlayerStats.resources >= buildmanager.BuildThisTurret.buildCost && turret == null && buildmanager.BuildThisTurret != null)
         {
-            rend.material.color = cantBuildColor;
+            Debug.Log("Will Build Here");
+            rend.material.color = buildColor;
         }
         else
         {
-            rend.material.color = hoverColor;
+            rend.material.color = selectionColor;
         }
     }
 

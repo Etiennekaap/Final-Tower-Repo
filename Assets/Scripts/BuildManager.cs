@@ -6,7 +6,9 @@ public class BuildManager : MonoBehaviour {
 
     public static BuildManager BuildManagerInstance;
 
+    public NodeUI nodeUI;
     public TurretBlueprints BuildThisTurret;
+    public NodeScript selectedNode;
 
     public bool Buildable { get { return BuildThisTurret != null; } }
 
@@ -32,6 +34,9 @@ public class BuildManager : MonoBehaviour {
             return;
         }
         BuildManagerInstance = this;
+
+        DeselectNode();
+        BuildThisTurret = null;
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------//
@@ -75,6 +80,27 @@ public class BuildManager : MonoBehaviour {
     public void SetBuildThisTurret(TurretBlueprints pTurret)
     {
         BuildThisTurret = pTurret;
+        DeselectNode();
+    }
+
+    public void SelectNode(NodeScript node)
+    {
+        if (selectedNode == node)
+        {
+            DeselectNode();
+            return;
+        }
+
+        BuildThisTurret = null;
+        selectedNode = node;
+
+        nodeUI.SetTarget(node);
+    }
+
+    public void DeselectNode()
+    {
+        selectedNode = null;
+        nodeUI.DeactivateUI();
     }
 
     public void BuildTurretHere(NodeScript node)
